@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  trading-bot:
+    build: .
+    container_name: doge-idr-trading-bot
+    environment:
+      - DB_CONNECTION_STRING=mssql+pyodbc://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?driver=ODBC+Driver+17+for+SQL+Server
+      - EXCHANGE_API_KEY=${EXCHANGE_API_KEY}
+      - EXCHANGE_API_SECRET=${EXCHANGE_API_SECRET}
+      - TRADING_SYMBOL=DOGE/IDR
+    ports:
+      - "8050:8050"  # Dashboard port
+    volumes:
+      - ./models:/app/models  # Persist trained models
+      - ./logs:/app/logs     # Persist logs
+    restart: unless-stopped
